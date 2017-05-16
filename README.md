@@ -1,5 +1,5 @@
-# assignment-1-team-62
-# Arduino Web Controller
+# assignment-5-team-62
+# Unit tests and user stories
 
 The Arduino Web Controller controls the Arduino Microcontroller through the clients' requests from a web server application. The functions and features included for this microcontroller are: 
 
@@ -15,6 +15,8 @@ The Arduino Web Controller uses a number of different packages and libraries in 
  - [Express](https://expressjs.com/) - fast node.js network app framework, the version used 4.15.2.
  - [johnny-five](http://johnny-five.io/) - Javascript Robotics and IoT platform utilizing node.js, version 0.10.6
  - [Node.js](https://nodejs.org/en/) - lightweight and efficient Javascript runtime, version 7.5.0
+ - [mocha](https://mochajs.org/) a feature-rich JavaScript test framework , version 3.4.1
+ - [chai](http://chaijs.com/) - a BDD / TDD assertion library paired with any javascript testing framework, version 4.0.0
 
 An Arduino microcontroller connected to your computer is also required. Be sure to have uploaded the StandardFirmataPlus program into the board before you run the web server.
 
@@ -39,6 +41,8 @@ Install the other dependencies.
 $ npm install express
 $ npm install socket.io
 $ npm install johnny-five
+$ npm install mocha -g
+$ npm install chai --save-dev
 ```
 ### Setting Up The Arduino Uno
 The minimum requirements for the Arduino is 
@@ -55,11 +59,18 @@ Connect the LED to a GND pin and pin number 13. Once the board has been set up, 
 
 Your board is now ready to go!
 ### Getting the server running
-Once you have all the depencies installed and the board set up, run the main.js file.
+Once you have all the dependencies installed and the board set up, run the main.js file.
 ```sh
 $ node app.js
 ```
 If you are running this on a local machine, connect to http://localhost:3000 and you should see the control panel for the microcontroller.
+
+### Running unit tests
+Again, once all dependencies are installed including mocha and chai you will need to ensure you are currently in the unittest directoy.
+```sh
+$ mocha app.js
+```
+The board does not to be connected to perform these unit tests.
 
 ### Features and functions
 
@@ -82,3 +93,4 @@ Turning the motion sensor off in the middle of a detection will cause the contro
 
 ### Authors
  - James Lee Zhong Kein - https://github.com/jamsawamsa
+ - Daniel Zambetto - https://github.com/djzam3
