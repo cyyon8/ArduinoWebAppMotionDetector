@@ -6,6 +6,7 @@ The Arduino Web Controller controls the Arduino Microcontroller through the clie
   - LED light on and off switch
   - PIR Motion sensor on and off switch
   - Motion counter which displays the total number of motions detected, including short and long motions on the web application
+  - Motion signal decoder which decodes a sequence of motion signals and displays the message
 
 ### Dependencies & Tech
 
@@ -44,6 +45,8 @@ $ npm install johnny-five
 $ npm install mocha -g
 $ npm install chai --save-dev
 ```
+Note: mocha and chai are required to run the test cases only.
+
 ### Setting Up The Arduino Uno
 The minimum requirements for the Arduino is 
 1. 1 PIR motion sensor
@@ -66,7 +69,7 @@ $ node app.js
 If you are running this on a local machine, connect to http://localhost:3000 and you should see the control panel for the microcontroller.
 
 ### Running unit tests
-Again, once all dependencies are installed including mocha and chai you will need to ensure you are currently in the unittest directoy.
+Again, once all dependencies are installed including mocha and chai you will need to ensure you are currently in the unittest directory.
 ```sh
 $ mocha app.js
 ```
@@ -85,11 +88,15 @@ Turn the motion sensor switch on to enable motion detection. When a motion is de
 
 When the motion sensor is turned off whilst detecting a motion, it will end the current motion and the controller will calculate the motion's duration based on the time it started to when the motion sensor is switched off.
 
+Switching the motion sensor on is equivalent to starting the signal recording session. When you turn the motion sensor switch off, the program will take whatever signals that are currently recorded from the current session and will proceed to decode the message. After that the message will be displayed on the user interface and the array that stores the signals will be emptied.
+
 ### Known Bugs
 
 Because the motion detector will constantly detect motions when connected to the Arduino, there will be times when a motion is already detected even before turning the motion sensor switch on. Turning the motion sensor on in the middle of this will cause the controller to register the start time of the motion as when the switch was turned on, not when the actual motion began. 
 
 Turning the motion sensor off in the middle of a detection will cause the controller to tabulate its duration based on when the motion started until the switch was turned off. Turning the switch on again immediately after might cause the program to register the single long motion as 2 motions.
+
+The motion detector might also not be able to accurately detect motion from the sensor. We have tried stimulating the motion sensor for about 10 seconds uninterrupted, but there are still times when the motion sensor would not detect anything, or end it's current detection session.
 
 ### Authors
  - James Lee Zhong Kein - https://github.com/jamsawamsa
