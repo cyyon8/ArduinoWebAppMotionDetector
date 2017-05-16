@@ -16,4 +16,9 @@ describe('Motion', function(){
 		var motion = new Motion(2);
 		expect(motion.getMotionType()).to.equal('S');
 	});
+	it('return -1 if length is < 0 seconds, indicating an invalid time',
+	function(){
+		var motion = new Motion(-1);
+		expect(motion.getMotionType()).to.equal(-1);
+	});
 });
