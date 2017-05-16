@@ -98,6 +98,7 @@
     });
 
     socket.on('messageDecoded', function(data) {
+        // displays the decoded msg onto the console, user story 7
         consoleMessageUpdate("The decoded message is: " + data.decodedMsg);
     });
 }());
