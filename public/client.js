@@ -81,13 +81,14 @@
     
     socket.on('motion:end', function(data) {
         if (motionDetecting) {
-            timeStamp = (new Date().getTime() - timeStamp)/1000;
+            timeStamp = (new Date().getTime() - timeStamp);
             // Checks for a long motion
-            var motionType = getMotionType(timeStamp);
+            var motionType = getMotionType(timeStamp/1000);
             // Long motions after motions greater than the value of LONG in seconds
             motionCountUpdate((motionType == "L") ? true : false);
-            consoleMessageUpdate("Motion ended, time was " + (timeStamp).toFixed(2).toString() + "seconds");
+            consoleMessageUpdate("Motion ended, time was " + (timeStamp/1000).toFixed(2).toString() + "seconds");
             motionDetecting = false;
+            socket.emit('eventUpdate', {motionType, timeStamp});
         }
     });
 }());
