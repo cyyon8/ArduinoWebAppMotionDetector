@@ -11,7 +11,7 @@ describe('Motion', function(){
 		expect(motion.getMotionType()).to.equal('L');
 	});
 
-	it('return false if length is < 8000, indicating a short motion',
+	it('return false if length is < 8 seconds, indicating a short motion',
 	function(){
 		var motion = new Motion(2);
 		expect(motion.getMotionType()).to.equal('S');
