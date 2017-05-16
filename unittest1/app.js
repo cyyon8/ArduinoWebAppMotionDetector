@@ -5,24 +5,15 @@ var Motion = require('./motion');
 
 describe('Motion', function(){
 
-	it('return true if length > 8000, indicating a long motion',
+	it('return true if time > 8 seconds, indicating a long motion',
 	function(){
-		this.timeout(10000);
-		
-		var motion = new Motion(9000);
-		expect(motion.getMotion()).to.equal(true);
+		var motion = new Motion(9);
+		expect(motion.getMotionType()).to.equal('L');
 	});
 
 	it('return false if length is < 8000, indicating a short motion',
 	function(){
-		this.timeout(10000);
-		var motion = new Motion(2000);
-		expect(motion.getMotion()).to.equal(false);
-	});
-
-	it('return -1 if no motion detected',
-	function(){
-		var motion = new Motion(0);
-		expect(motion.getMotion()).to.equal(-1);
+		var motion = new Motion(2);
+		expect(motion.getMotionType()).to.equal('S');
 	});
 });
