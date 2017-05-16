@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Material Design Lite -->
+        <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+        <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+        <!-- Material Design icon font -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        
+        <title>Arduino Web Controller</title>
+        <style>
+            html, body {
+                width: 100%;
+                height: 100%;
+            }
+            .wrapper {
+                vertical-align: middle;
+                display: mdl-data-table__cell--non-numeric;
+                margin: 10%;
+            }
+            table {
+                margin: 0 auto;
+                vertical-align: middle;
+                width: 320px;
+            }
+
+            table thead th {
+                background-color: #3f51b5;
+                width: 100%;
+            }
+
+            table thead th h1 {
+                color: #FFF;
+                font-size: 2.5em;
+            }
+            #consoleMessage {
+                /*font-size: 0.9em;*/
+                font-style: italic;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="wrapper">
+        <!--<table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">-->
+        <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" vertical-align="middle">
+            <thead>
+                <tr>
+                    <th colspan="2" class="mdl-data-table__cell--non-numeric"><h1>Control Panel</h1></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <!--<td class="mdl-data-table__cell--non-numeric">Acrylic (Transparent)</td>-->
+                    <td class="mdl-data-table__cell--non-numeric">LED Switch</td>
+                    <td>
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="led">
+                            <!--<input type="checkbox" id="led" class="mdl-switch__input" checked onchange="ledControl()">-->
+                            <input type="checkbox" id="led" class="mdl-switch__input">
+                            <span class="mdl-switch__label"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Motion Sensor Switch</td>
+                    <td>
+                        <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="motionSensor">
+                            <input type="checkbox" id="motionSensor" class="mdl-switch__input">
+                            <span class="mdl-switch__label"></span>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Total Motions Detected</td>
+                    <td id="totalMotions">0</td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Short Motions</td>
+                    <td id="totalShortMotions">0</td>
+                </tr>
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">Long Motions</td>
+                    <td id="totalLongMotions">0</td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="mdl-data-table__cell--non-numeric" id="consoleMessage">To get started, toggle with the switches above. <br />Console messages will be displayed here.</td>
+                </tr>
+            </tbody>
+        </table>
+        <!--<span id="consoleMessage2">To get started, toggle with the switches above. <br />Console messages will be displayed here.</span>-->
+        </div>
+        <script src="./socket.io/socket.io.js"></script>
+        <script src="client.js"></script>
+    </body>
+</html>
