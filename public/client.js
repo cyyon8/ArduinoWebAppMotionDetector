@@ -10,6 +10,16 @@
     // to show the status of the motion sensor and LONG which is the minimum duration for a long motion
     var timeStamp, motionDetecting = false;
     var LONG = 7.0;
+
+    function getMotionType(time) {
+        // returns "L" if motion is a long motion, "S" otherwise
+        if (time > LONG) {
+            return "L";
+        }
+        else {
+            return "S";
+        }
+    }
 	
 	function ledControl() {
 		if (document.getElementById('led').checked) {
@@ -71,11 +81,12 @@
     
     socket.on('motion:end', function(data) {
         if (motionDetecting) {
-            timeStamp = new Date().getTime() - timeStamp;
+            timeStamp = (new Date().getTime() - timeStamp)/1000;
             // Checks for a long motion
+            var motionType = getMotionType(timeStamp);
             // Long motions after motions greater than the value of LONG in seconds
-            motionCountUpdate((timeStamp/1000 > LONG) ? true : false);
-            consoleMessageUpdate("Motion ended, time was " + (timeStamp/1000).toFixed(2).toString() + "seconds");
+            motionCountUpdate((motionType == "L") ? true : false);
+            consoleMessageUpdate("Motion ended, time was " + (timeStamp).toFixed(2).toString() + "seconds");
             motionDetecting = false;
         }
     });
