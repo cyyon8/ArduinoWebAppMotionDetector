@@ -69,9 +69,13 @@ $ node app.js
 If you are running this on a local machine, connect to http://localhost:3000 and you should see the control panel for the microcontroller.
 
 ### Running unit tests
-Again, once all dependencies are installed including mocha and chai you will need to ensure you are currently in the unittest directory.
+Again, once all dependencies are installed including mocha and chai you will need to ensure you are currently in the unittest directory. To run the first unit test:
 ```sh
-$ mocha app.js
+$ mocha unitTest1.js
+```
+And to run the second unit test:
+```sh
+$ mocha unitTest2.js
 ```
 The board does not to be connected to perform these unit tests.
 
