@@ -20,10 +20,10 @@ app.get('/', function(req, res, next) {
 
 //Boolean for motion sensor switch
 var motionSensorSwitch = false, ledSwitch = false;
-var DOT = 1; // adjusts the time sensitivity between words and chars 
+var dot = 1.5; // adjusts the time sensitivity between words and chars 
 var signalArray = []; // array to store signals
-var WORDGAP = 7000 * DOT; // global vars for word and char gaps
-var CHARGAP = 3000 * DOT;
+var WORDGAP = 7000 * dot; // global vars for word and char gaps
+var CHARGAP = 3000 * dot;
 
 
 var morseCharacterToEncodingTable = { // morse code table
