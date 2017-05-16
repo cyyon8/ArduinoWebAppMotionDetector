@@ -11,6 +11,7 @@
     var timeStamp, motionDetecting = false;
     var LONG = 8.0;
 
+    //User story 4
     function getMotionType(time) {
         // returns "L" if motion is a long motion, "S" otherwise
         if (time > LONG) {
@@ -52,7 +53,9 @@
 		}
 	}
 
+     //User story 3a, 3b
     function motionCountUpdate(longMotion = false) {
+	//User story 5a
         document.getElementById("totalMotions").innerHTML = Number(document.getElementById("totalMotions").innerHTML) + 1;
         if (longMotion) {
             document.getElementById("totalLongMotions").innerHTML = Number(document.getElementById("totalLongMotions").innerHTML) + 1;
@@ -73,6 +76,7 @@
         socket.emit('join', 'Client is connected!');
     });
 
+    //User story 2a, 2b, 5b
     socket.on('motion:start', function(data)  {
         motionDetecting = true;
         timeStamp = new Date().getTime();
