@@ -10,6 +10,9 @@ Motion.prototype.getMotionType = function(){
             return "L";
         }
         else {
+            if (this._timeStamp < 0) {
+                return -1;
+            } 
             return "S";
         }
 };
