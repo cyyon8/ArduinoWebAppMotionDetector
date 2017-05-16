@@ -85,6 +85,9 @@ function getCharacter (signal) { // gets a character from the morse code table f
 function decode (events) { // decodes signals into a message
     var build = [], message = [], word =[], char; //define vars
     for (var i = 0; i < events.length; i++) { // loop while there are still signals to process
+        if (events[i].gap < 0) { // handle invalid time gaps
+            return "Error: Signal interval time is not positive.";
+        }
         if (events[i].gap >= WORDGAP) { // words over here
             char = getCharacter(build.join("")); // get character
             if (char == null) word.push("null"); // null characters
