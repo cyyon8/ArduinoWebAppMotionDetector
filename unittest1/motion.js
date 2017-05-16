@@ -5,7 +5,7 @@ function Motion(time){
 
 //Calculate long motion
 Motion.prototype.getMotionType = function(){
-	const LONG_MOTION = 8000;
+	const LONG_MOTION = 8;
 	if (this._timeStamp > LONG_MOTION) {
             return "L";
         }
