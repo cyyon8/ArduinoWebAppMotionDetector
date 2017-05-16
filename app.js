@@ -67,6 +67,7 @@ function beginMotion() {
     }
 }
 
+//User story 6b
 function getCharacter (signal) { // gets a character from the morse code table from a string of signals
     if (signal.length == 0) { // check for a signal
         return null;
@@ -100,6 +101,7 @@ function decode (events) { // decodes signals into a message
             char = getCharacter(build.join("")); // get character
             if (char == "SK") { // if receive end of message, exit early
                 message.push(word.join(""));
+                //User story 6a
                 return message; 
             }
             if (build.length != 0) word.push(char); // if build array is not empty
@@ -133,10 +135,11 @@ board.on("ready", function() {
     motion = new five.Motion(7);
     led.off();
 
+    //User story 1a
     motion.on("calibrated", function() {
         console.log("Motion sensor calibrated")
     });
-
+    //User story 1b
     motion.on("motionstart", function() {
         // if (motionSensorSwitch) {
         //     console.log("Motion detected");
