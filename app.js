@@ -209,7 +209,6 @@ io.on('connection', function (client) {
         motionSensorSwitch = false;
         if (signalArray.length != 0) {
             var decodedMsg = decode(signalArray);
-            console.log("hahaha");
             console.log(decodedMsg);
             io.emit('messageDecoded', {decodedMsg});
         }
