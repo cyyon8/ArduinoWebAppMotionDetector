@@ -55,7 +55,6 @@
 
      //User story 3a, 3b
     function motionCountUpdate(longMotion = false) {
-	//User story 5a
         document.getElementById("totalMotions").innerHTML = Number(document.getElementById("totalMotions").innerHTML) + 1;
         if (longMotion) {
             document.getElementById("totalLongMotions").innerHTML = Number(document.getElementById("totalLongMotions").innerHTML) + 1;
