@@ -9,7 +9,7 @@
     // Initialize variables: d - Date object placeholder, timeStamp to get current time, motionDetecting
     // to show the status of the motion sensor and LONG which is the minimum duration for a long motion
     var timeStamp, motionDetecting = false;
-    var LONG = 7.0;
+    var LONG = 8.0;
 
     function getMotionType(time) {
         // returns "L" if motion is a long motion, "S" otherwise
