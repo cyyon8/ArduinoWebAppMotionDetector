@@ -223,7 +223,7 @@ io.on('connection', function (client) {
     client.on('motion:on', function(data) { // motion switched on from client side
         console.log("MOTION SENSOR ON RECEIVED");
         motionSensorSwitch = true;
-        // timeGap = new Date().getTime() - timeGap; // get new time gap
+        timeGapOffset = new Date().getTime() - timeGap; // resuming motion detection, update the time gap to ignore break period
         if (motion.detectedMotion) {
             beginMotion(); // initiate a motion detection sequence if a motion is detected
         }
@@ -233,6 +233,8 @@ io.on('connection', function (client) {
     client.on('motion:off', function(data) {
         console.log(signalArray);
         console.log("MOTION SENSOR OFF RECEIVED");
+        // save time gap at this instance
+        timeGap = new Date().getTime() - timeGap - timeGapOffset;
         if (ledSwitch) {
             led.on();
         }
@@ -246,10 +248,9 @@ io.on('connection', function (client) {
         // signalArray.push({signal:data.motionType, gap:parseInt(data.timeStamp)});
         signalArray.push({signal:data.motionType, gap: timeGap});
         timeGap = new Date().getTime() - timeGapOffset;
-        
         console.log(signalArray);
         if (signalArray.length != 0) { // if there are signals
-            var decodedMsg = decode(signalArray); // decode signals
+            var decodedMsg = decode(signalArray).join(""); // decode signals
             console.log(decodedMsg);
             io.emit('messageDecoded', {decodedMsg}); // let client side know that there is a decoded message
         }
