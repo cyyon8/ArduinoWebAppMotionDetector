@@ -1,12 +1,13 @@
 # assignment-5-team-62
-# Unit tests and user stories
+# Morse code interpreter
 
-The Arduino Web Controller controls the Arduino Microcontroller through the clients' requests from a web server application. The functions and features included for this microcontroller are: 
+The morse code interpreter uses an Arduino Microcontroller and a pip motion sensor to capture motions and interpret chains of motions into letters, numbers and puncuation mark based on the morse code defined alphabet. It features:
 
-  - LED light on and off switch
-  - PIR Motion sensor on and off switch
-  - Motion counter which displays the total number of motions detected, including short and long motions on the web application
-  - Motion signal decoder which decodes a sequence of motion signals and displays the message
+  -Ability to interpret motions into meaningful messages
+  -View printed messages through a web interface
+  -Ability to end transmissions, turn sensor and LED on or off through an easy to use web interface  
+  -Follows the standard morse code alphabet
+  -Real time server-client interaction
 
 ### Dependencies & Tech
 
@@ -16,6 +17,8 @@ The Arduino Web Controller uses a number of different packages and libraries in 
  - [Express](https://expressjs.com/) - fast node.js network app framework, the version used 4.15.2.
  - [johnny-five](http://johnny-five.io/) - Javascript Robotics and IoT platform utilizing node.js, version 0.10.6
  - [Node.js](https://nodejs.org/en/) - lightweight and efficient Javascript runtime, version 7.5.0
+ 
+For testing:
  - [mocha](https://mochajs.org/) a feature-rich JavaScript test framework , version 3.4.1
  - [chai](http://chaijs.com/) - a BDD / TDD assertion library paired with any javascript testing framework, version 4.0.0
 
@@ -80,6 +83,14 @@ $ mocha unitTest2.js
 The board does not to be connected to perform these unit tests.
 
 ### Features and functions
+The main functionality is the ability to decode motions into meaningful messages through short and long motions which correlate to Long and Short motions. A long motion is defined as any motion greater than or equal to 8 seconds and short motion below this.
+
+```js
+'A': 'SL'
+'B':'LSSS'
+...
+'Z':'LLSS'
+```
 
 The web controller allows you to control the LED and motion sensor on the Arduino Uno. 
 
