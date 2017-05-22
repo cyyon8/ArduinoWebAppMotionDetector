@@ -83,6 +83,8 @@ $ mocha unitTest2.js
 The board does not to be connected to perform these unit tests.
 
 ### Features and functions
+
+####Morse Code Interpreter
 The main functionality is the ability to decode motions into meaningful messages through short and long motions. A long motion is defined as any motion greater than or equal to 8 seconds and a short motion is below 8 seconds. 
 
 ```js
