@@ -96,7 +96,7 @@ The main functionality is the ability to decode motions into meaningful messages
 'SK': 'SSSLSL' #end of transmission
 ```
 
-From each transmission of the motion to the client side, the system will recognize a BLANK seconds gap as a word is still being produced, and a BLANK2 gap is to indicate that a word has been sent. From this the system will print out when ever a letter has been decoded and/or space between words. 
+From each transmission of the motion to the client side, the system will checks when the last time signal is sent through with motion, gap as a word is still being produced, and a BLANK2 gap is to indicate that a word has been completely . From this the system will print out when ever a letter has been decoded and/or space between words. 
 
 ### Web interface
 
