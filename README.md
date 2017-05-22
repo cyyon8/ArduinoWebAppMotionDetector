@@ -83,7 +83,7 @@ $ mocha unitTest2.js
 The board does not to be connected to perform these unit tests.
 
 ### Features and functions
-The main functionality is the ability to decode motions into meaningful messages through short and long motions which correlate to Long and Short motions. A long motion is defined as any motion greater than or equal to 8 seconds and a short motion is below 8 seconds.
+The main functionality is the ability to decode motions into meaningful messages through short and long motions. A long motion is defined as any motion greater than or equal to 8 seconds and a short motion is below 8 seconds. 
 
 ```js
 'A': 'SL'
@@ -94,7 +94,9 @@ The main functionality is the ability to decode motions into meaningful messages
 'SK': 'SSSLSL' #end of transmission
 ```
 
-The web controller allows you to control the LED and motion sensor on the Arduino Uno. 
+From each transmission of the motion to the client side, the system will recognize a BLANK seconds gap as a word is still being produced, and a BLANK2 gap is to indicate that a word has been sent. From this the system will print out when ever a letter has been decoded and/or space between words. 
+
+The web interface allows you turn off transmission, which will cause the system to stop getting information from the server. It also allows you turn off the LED and Motion sensor.
 
 Turn the LED switch on to switch the LED on. 
 The LED has 2 modes:
