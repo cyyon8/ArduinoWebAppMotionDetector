@@ -107,6 +107,6 @@
     socket.on('messageDecoded', function(data) {
         // displays the decoded msg onto the web client, user story 7
         // update decoder console message
-        document.getElementById("decodedMessage").innerHTML = "The decoded message is: " + data.decodedMsg;
+        document.getElementById("decodedMessage").innerHTML = data.decodedMsg;
     });
 }());

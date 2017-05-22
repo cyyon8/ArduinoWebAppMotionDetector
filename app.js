@@ -21,11 +21,11 @@ app.get('/', function(req, res, next) {
 
 //Boolean for motion sensor switch
 var motionSensorSwitch = false, ledSwitch = false;
-var dot = 1.5; // adjusts the time sensitivity between words and chars 
+var dot = 2; // adjusts the time sensitivity between words and chars 
 var signalArray = []; // array to store signals
 var WORDGAP = 7000 * dot; // global vars for word and char gaps
 var CHARGAP = 3000 * dot;
-var SkRecv = 0; // whether the SK prosign has been received
+var skRecv = 0; // whether the SK prosign has been received
 var timeGap = 0; // time gap between current and previous signal event
 var timeGapOffset = 0; // offset for the time gap
 
@@ -249,9 +249,19 @@ io.on('connection', function (client) {
         signalArray.push({signal:data.motionType, gap: timeGap});
         timeGap = new Date().getTime() - timeGapOffset;
         console.log(signalArray);
-        if (signalArray.length != 0) { // if there are signals
-            var decodedMsg = decode(signalArray).join(""); // decode signals
+        if (signalArray.length != 0 && skRecv == 0) { // if there are signals and prosign not received
+            var decodedMsg = decode(signalArray); // decode signals
             console.log(decodedMsg);
+            if (decodedMsg[decodedMsg.length-1] == 'SK') {
+                skRecv = 1;
+                decodedMsg = decodedMsg.splice(decodedMsg.length-1, 1); // remove last element in array
+                decodedMsg = "SK received, no further signals will be decoded <br>The decoded message is:" + decodedMsg.join(""); // set msg to be printed
+            }
+            else {
+                // set the msg to be shown
+                decodedMsg = "The decoded message is: <br>" + decodedMsg.join("");
+            }
+            // tell client to display message
             io.emit('messageDecoded', {decodedMsg}); // let client side know that there is a decoded message
         }
     });
@@ -259,6 +269,7 @@ io.on('connection', function (client) {
     client.on('resetDb', function(data) {
         console.log('Database reset.')
         signalArray = [];
+        skRecv = 0; // reset sk received and signal array
     });
 }); 
 
