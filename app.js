@@ -10,7 +10,8 @@ const io = require('socket.io').listen(server);
 // Initializing LED and motion sensor variables
 let led = null;
 let motion = null;
-let timeGap = 0;
+
+
 
 // File resource pointers
 app.use(express.static(__dirname + '/public'));
@@ -24,6 +25,9 @@ var dot = 1.5; // adjusts the time sensitivity between words and chars
 var signalArray = []; // array to store signals
 var WORDGAP = 7000 * dot; // global vars for word and char gaps
 var CHARGAP = 3000 * dot;
+var SkRecv = 0; // whether the SK prosign has been received
+var timeGap = 0; // time gap between current and previous signal event
+var timeGapOffset = 0; // offset for the time gap
 
 
 var morseCharacterToEncodingTable = { // morse code table
@@ -53,14 +57,48 @@ var morseCharacterToEncodingTable = { // morse code table
         'X': 'LSSL',
         'Y': 'LSLL',
         'Z': 'LLSS',
-        'SK': 'LLSSLL'
+        'SK': 'SSSLSL',
+        '1': 'SLLLL',
+        '2': 'SSLLL',
+        '3': 'SSSLL',
+        '4': 'SSSSL',
+        '5': 'SSSSS',
+        '6': 'LSSSS',
+        '7': 'LLSSS',
+        '8': 'LLLSS',
+        '9': 'LLLLS',
+        '0': 'LLLLL',
+        '.': 'SLSLSL',
+        ',': 'LLSSLL',
+        '?': 'SSLLSS',
+        "'": 'LSSSSL',
+        '!': 'LSLSLL',
+        '/': 'LSSLS',
+        '(': 'LSLLS',
+        ')': 'LSLLSL',
+        '&': 'SLSSS',
+        ':': 'LLLSSS',
+        ';': 'LSLSLS',
+        '=': 'LSSSL',
+        '+': 'SLSLS',
+        '-': 'LSSSSL',
+        '_': 'SSLLSL',
+        '"': 'SLSSLS',
+        '$': 'SSSLSSL',
+        '@': 'SLLSLS'
 };
 
 
 function beginMotion() {
+    if (signalArray.length == 0) { // adjust offset for the first signal
+        timeGapOffset = new Date().getTime();
+        timeGap = 0; 
+    } else { // get new time gap
+        timeGap = new Date().getTime() - timeGap - timeGapOffset; // get new time gap
+    }
     if (motionSensorSwitch) {
             // console.log("Motion detected");
-            io.emit("motion:start");
+            io.emit("motion:start"); // initiate a motion starting in client side
     }
     if (ledSwitch) {
         led.on();
@@ -101,6 +139,7 @@ function decode (events) { // decodes signals into a message
             char = getCharacter(build.join("")); // get character
             if (char == "SK") { // if receive end of message, exit early
                 message.push(word.join(""));
+                message.push('SK')
                 //User story 6a
                 return message; 
             }
@@ -113,6 +152,7 @@ function decode (events) { // decodes signals into a message
                 char = getCharacter(build.join(""))
                 if (char == 'SK') { // SK read
                     message.push(word.join("")); //early exit
+                    message.push('SK');
                     return message;
                 }
                 else if (char != null)  word.push(char);
@@ -141,25 +181,17 @@ board.on("ready", function() {
     });
     //User story 1b
     motion.on("motionstart", function() {
-        // if (motionSensorSwitch) {
-        //     console.log("Motion detected");
-        //     io.emit("motion:start");
-        // }
-        // if (ledSwitch) {
-        //     led.on();
-        // }
-        beginMotion();
+        beginMotion(); // initiate the beginning of a motion detection
     });
 
     motion.on("motionend", function() {
-        if (motionSensorSwitch) {
-            // console.log("Motion ended");
-            io.emit("motion:end");
+        if (motionSensorSwitch) { // if motion switch is on
+            io.emit("motion:end"); // initiate a motion ending
         }
-        if (!motionSensorSwitch && ledSwitch) {
+        if (!motionSensorSwitch && ledSwitch) { // keep led on if led switch is on
             led.on();
         }
-        else if (ledSwitch) {
+        else if (ledSwitch) { // turn led off otherwise
             led.off();
         }
     });
@@ -167,58 +199,65 @@ board.on("ready", function() {
 
 io.on('connection', function (client) {
     client.on('join', function(handshake) {
-        // console.log(handshake);
         console.log("Client connected");
         motionSensorSwitch = false;
         ledSwitch = false;
     });
-    client.on('led:on', function (data) {
-        ledSwitch = true;
-        if (motionSensorSwitch && motion.detectedMotion){
-            // if (motion.detectedMotion) {
-            // led.on();
-            // }
-            led.on();
+    client.on('led:on', function (data) { // led switched on from client side
+        ledSwitch = true; 
+        if (motionSensorSwitch && motion.detectedMotion){ // if currently detecting a motion
+            led.on(); // switch led on
         }
-        else if (!motionSensorSwitch) {
+        else if (!motionSensorSwitch) { // switch on if not detecting a motion
             led.on();
-        }
-        // console.log(motion.detectedMotion);
-        
+        }        
         console.log('LED ON RECEIVED');
     });
  
-    client.on('led:off', function (data) {
+    client.on('led:off', function (data) { // led switched off from client side
         ledSwitch = false;
-        led.off();
+        led.off(); // switch off led
         console.log('LED OFF RECEIVED');
     });
 
-    client.on('motion:on', function(data) {
+    client.on('motion:on', function(data) { // motion switched on from client side
         console.log("MOTION SENSOR ON RECEIVED");
         motionSensorSwitch = true;
-        timeGap = new Date().getTime() - timeGap;
+        // timeGap = new Date().getTime() - timeGap; // get new time gap
         if (motion.detectedMotion) {
-            beginMotion();
+            beginMotion(); // initiate a motion detection sequence if a motion is detected
         }
     });
 
+    // motion switched off from client side
     client.on('motion:off', function(data) {
+        console.log(signalArray);
         console.log("MOTION SENSOR OFF RECEIVED");
         if (ledSwitch) {
             led.on();
         }
+        // initiate motion end sequence in case any motion is currently being detected
         io.emit('motion:end');
         motionSensorSwitch = false;
-        if (signalArray.length != 0) {
-            var decodedMsg = decode(signalArray);
+    });
+
+    // an event needs to be updated
+    client.on('eventUpdate',function(data) {
+        // signalArray.push({signal:data.motionType, gap:parseInt(data.timeStamp)});
+        signalArray.push({signal:data.motionType, gap: timeGap});
+        timeGap = new Date().getTime() - timeGapOffset;
+        
+        console.log(signalArray);
+        if (signalArray.length != 0) { // if there are signals
+            var decodedMsg = decode(signalArray); // decode signals
             console.log(decodedMsg);
-            io.emit('messageDecoded', {decodedMsg});
+            io.emit('messageDecoded', {decodedMsg}); // let client side know that there is a decoded message
         }
     });
-    client.on('eventUpdate',function(data) {
-        signalArray.push({signal:data.motionType, gap:parseInt(data.timeStamp)});
-        console.log(signalArray);
+
+    client.on('resetDb', function(data) {
+        console.log('Database reset.')
+        signalArray = [];
     });
 }); 
 
