@@ -1,5 +1,5 @@
-# assignment-5-team-62
-# Morse code interpreter
+# Arduino Morse Code Interpreter with Web App
+## Morse code interpreter
 
 The morse code interpreter uses an Arduino Microcontroller and a pip motion sensor to capture motions and interpret chains of motions into letters, numbers and puncuation mark based on the morse code defined alphabet. It features:
 
